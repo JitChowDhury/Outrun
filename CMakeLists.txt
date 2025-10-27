@@ -7,16 +7,20 @@ project(Outrun LANGUAGES CXX)
 # Where to put the final program
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-# Get raylib from GitHub
-include(FetchContent)
-FetchContent_Declare(raylib
-    GIT_REPOSITORY https://github.com/raysan5/raylib.git
-    GIT_TAG 5.5
-    GIT_SHALLOW ON
-    EXCLUDE_FROM_ALL
-    SYSTEM
-)
-FetchContent_MakeAvailable(raylib)
+# # Get raylib from GitHub
+# include(FetchContent)
+# FetchContent_Declare(raylib
+#     GIT_REPOSITORY https://github.com/raysan5/raylib.git
+#     GIT_TAG 5.5
+#     GIT_SHALLOW ON
+#     EXCLUDE_FROM_ALL
+#     SYSTEM
+# )
+# FetchContent_MakeAvailable(raylib)
+
+# Use local raylib instead of fetching from GitHub
+set(RAYLIB_SRC_DIR "E:/CODE/C++/RAYLIB/RAYLIB/raylib-5.5/raylib")
+add_subdirectory(${RAYLIB_SRC_DIR} ${CMAKE_BINARY_DIR}/raylib-build)
 
 # Collect sources
 file(GLOB SRC_FILES src/*.cpp)
