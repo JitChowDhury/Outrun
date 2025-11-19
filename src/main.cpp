@@ -1,5 +1,13 @@
 #include "raylib.h"
 #include "raymath.h"
+class Character
+{
+private:
+
+public:
+
+};
+
 
 int main()
 {
@@ -67,13 +75,9 @@ int main()
 		{
 			row = idle_row;
 		}
-
-
 	
 		
 		DrawTextureEx(map, mapPos, 0.0, 4.0, WHITE);
-
-
 
 		//update animation Time
 
