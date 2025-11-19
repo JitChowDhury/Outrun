@@ -3,23 +3,9 @@
 class Character
 {
 private:
-
-public:
-
-};
-
-
-int main()
-{
-	const int WINDOW_WIDTH{ 684 };
-	const int WINDOW_HEIGHT{ 684 };
-
-	InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "OutRun");
-
-	Texture2D map = LoadTexture("assets/tilesets/worldmap.png");
-	Vector2 mapPos{ 0.0,0.0 };
-
-	float speed{ 4.0 };
+	Texture2D texture;
+	Vector2 screenPos;
+	Vector2 worldPos;
 	//right for 1 left for -1
 	float rightLeft{ 1.f };
 
@@ -38,6 +24,26 @@ int main()
 	int run_row_down = 3;
 	int run_row_up = 5;
 	int row{};
+public:
+
+	Vector2 GetWorldPos() { return worldPos; }
+	
+
+};
+
+
+int main()
+{
+	const int WINDOW_WIDTH{ 684 };
+	const int WINDOW_HEIGHT{ 684 };
+
+	InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "OutRun");
+
+	Texture2D map = LoadTexture("assets/tilesets/worldmap.png");
+	Vector2 mapPos{ 0.0,0.0 };
+
+	float speed{ 4.0 };
+
 
 	Texture2D player = LoadTexture("assets/texture/Player.png");
 	Vector2 playerPos
