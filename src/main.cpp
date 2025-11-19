@@ -12,6 +12,22 @@ int main()
 	Vector2 mapPos{ 0.0,0.0 };
 
 	float speed{ 4.0 };
+	//right for 1 left for -1
+	float rightLeft{ 1.f };
+
+	//ANIMATION VARIABLES
+
+	float runningTime{};
+	int frame{};
+	const int MAXFRAMES{ 6 };
+	const float UPDATETIME{ 1.f / 12.f };
+
+
+	//draw the character
+	int column = 0;
+	int idle_row = 1;
+	int run_row = 4;
+	int row{};
 
 	Texture2D player = LoadTexture("assets/texture/Player.png");
 	Vector2 playerPos
@@ -44,19 +60,38 @@ int main()
 		if (Vector2Length(direction) != 0.0)
 		{
 			mapPos = Vector2Subtract(mapPos, Vector2Scale(Vector2Normalize(direction), speed));
+		    direction.x < 0.f? rightLeft = -1.f: rightLeft = 1.f;
+			row = run_row;
+		}
+		else
+		{
+			row = idle_row;
 		}
 
+
+	
 		
 		DrawTextureEx(map, mapPos, 0.0, 4.0, WHITE);
 
-		//draw the character
-		int column = 0;
-		int row = 1;
+
+
+		//update animation Time
+
+		runningTime += GetFrameTime();
+		if (runningTime >= UPDATETIME)
+		{
+			frame++;
+			runningTime = 0.f;
+			if (frame > MAXFRAMES) frame = 0;
+		}
+
+		
+
 
 		Rectangle source{
-			column * frameWidth,
-			row * frameHeight,
-			(float)player.width / 6.f,
+			frame * frameWidth,
+			row* frameHeight,
+			rightLeft*(float)player.width / 6.f,
 			(float)player.height / 10.0f
 		};
 
