@@ -11,8 +11,8 @@ public:
 
 int main()
 {
-	const int WINDOW_WIDTH{ 384 };
-	const int WINDOW_HEIGHT{ 384 };
+	const int WINDOW_WIDTH{ 684 };
+	const int WINDOW_HEIGHT{ 684 };
 
 	InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "OutRun");
 
@@ -34,7 +34,9 @@ int main()
 	//draw the character
 	int column = 0;
 	int idle_row = 1;
-	int run_row = 4;
+	int run_row_side = 4;
+	int run_row_down = 3;
+	int run_row_up = 5;
 	int row{};
 
 	Texture2D player = LoadTexture("assets/texture/Player.png");
@@ -69,7 +71,18 @@ int main()
 		{
 			mapPos = Vector2Subtract(mapPos, Vector2Scale(Vector2Normalize(direction), speed));
 		    direction.x < 0.f? rightLeft = -1.f: rightLeft = 1.f;
-			row = run_row;
+			if (direction.y > 0.f && direction.x == 0.f)
+			{
+				row = run_row_down;
+			}
+			else if (direction.y < 0.f && direction.x==0.f)
+			{
+				row = run_row_up;
+			}
+			else
+			{
+				row = run_row_side;
+			}
 		}
 		else
 		{
