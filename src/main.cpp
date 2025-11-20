@@ -1,111 +1,7 @@
 #include "raylib.h"
 #include "raymath.h"
-class Character
-{
-private:
-	Texture2D texture{LoadTexture("assets/texture/Player.png") };
-	Vector2 screenPos{};
-	Vector2 worldPos{};
-	//right for 1 left for -1
-	float rightLeft{ 1.f };
-	float speed{ 4.0 };
-	//ANIMATION VARIABLES
 
-	float runningTime{};
-	int frame{};
-	const int MAXFRAMES{ 6 };
-	const float UPDATETIME{ 1.f / 12.f };
-	const float SPEED{ 4.f };
-	float frameWidth{ texture.width / 6.0f};
-	float frameHeight{ texture.height / 10.0f};
-
-	//draw the character
-	int column = 0;
-	int idle_row = 1;
-	int run_row_side = 4;
-	int run_row_down = 3;
-	int run_row_up = 5;
-	int row{};
-public:
-
-	Vector2 GetWorldPos() { return worldPos; }
-	void SetScreenPos(int winWidth, int winHeight);
-	void Update(float deltaTime);
-	
-
-};
-
-
-
-void Character::SetScreenPos(int winWidth, int winHeight)
-{
-	screenPos =
-	{
-		winWidth / 2.0f - 4.0f * (0.5f * (float)texture.width / 6.0f),
-		winHeight / 2.0f - 4.0f * (0.5f * (float)texture.height / 10.0f),
-	};
-}
-
-void Character::Update(float deltaTime)
-{
-	Vector2 direction{};
-
-
-	if (IsKeyDown(KEY_A))
-		direction.x -= 1.0;
-	if (IsKeyDown(KEY_D))
-		direction.x += 1.0;
-	if (IsKeyDown(KEY_W))
-		direction.y -= 1.0;
-	if (IsKeyDown(KEY_S))
-		direction.y += 1.0;
-
-	if (Vector2Length(direction) != 0.0)
-	{
-		//set worldPos=worldPos+direction
-		worldPos = Vector2Add(worldPos, Vector2Scale(Vector2Normalize(direction), speed));
-		direction.x < 0.f ? rightLeft = -1.f : rightLeft = 1.f;
-		if (direction.y > 0.f && direction.x == 0.f)
-		{
-			row = run_row_down;
-		}
-		else if (direction.y < 0.f && direction.x == 0.f)
-		{
-			row = run_row_up;
-		}
-		else
-		{
-			row = run_row_side;
-		}
-	}
-	else
-	{
-		row = idle_row;
-	}
-
-	runningTime += deltaTime;
-	if (runningTime >= UPDATETIME)
-	{
-		frame++;
-		runningTime = 0.f;
-		if (frame > MAXFRAMES) frame = 0;
-	}
-
-	Rectangle source{
-
-	frame * frameWidth,
-	row * frameHeight,
-	rightLeft * (float)texture.width / 6.f,
-	(float)texture.height / 10.0f
-
-	};
-
-	Rectangle dest{ screenPos.x,screenPos.y,4.0f * (float)texture.width / 6.0f,4.0f * (float)texture.height / 10.0f };
-
-	DrawTexturePro(texture, source, dest, Vector2{}, 0.f, WHITE);
-}
-
-
+#include "Character.h"
 
 int main()
 {
@@ -130,7 +26,7 @@ int main()
 
 		player.Update(GetFrameTime());
 
-		//update animation Time
+
 
 	
 
