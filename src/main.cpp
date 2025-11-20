@@ -4,11 +4,11 @@ class Character
 {
 private:
 	Texture2D texture{LoadTexture("assets/texture/Player.png") };
-	Vector2 screenPos;
-	Vector2 worldPos;
+	Vector2 screenPos{};
+	Vector2 worldPos{};
 	//right for 1 left for -1
 	float rightLeft{ 1.f };
-
+	float speed{ 4.0 };
 	//ANIMATION VARIABLES
 
 	float runningTime{};
@@ -16,7 +16,8 @@ private:
 	const int MAXFRAMES{ 6 };
 	const float UPDATETIME{ 1.f / 12.f };
 	const float SPEED{ 4.f };
-
+	float frameWidth{ texture.width / 6.0f};
+	float frameHeight{ texture.height / 10.0f};
 
 	//draw the character
 	int column = 0;
@@ -89,15 +90,20 @@ void Character::Update(float deltaTime)
 		runningTime = 0.f;
 		if (frame > MAXFRAMES) frame = 0;
 	}
+
+	Rectangle source{
+
+	frame * frameWidth,
+	row * frameHeight,
+	rightLeft * (float)texture.width / 6.f,
+	(float)texture.height / 10.0f
+
+	};
+
+	Rectangle dest{ screenPos.x,screenPos.y,4.0f * (float)texture.width / 6.0f,4.0f * (float)texture.height / 10.0f };
+
+	DrawTexturePro(texture, source, dest, Vector2{}, 0.f, WHITE);
 }
-
-
-
-
-
-
-
-
 
 
 
@@ -107,34 +113,22 @@ int main()
 	const int WINDOW_HEIGHT{ 684 };
 
 	InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "OutRun");
+	Character player;
+	player.SetScreenPos(WINDOW_WIDTH, WINDOW_HEIGHT);
 
 	Texture2D map = LoadTexture("assets/tilesets/worldmap.png");
 	Vector2 mapPos{ 0.0,0.0 };
 
-	float speed{ 4.0 };
-
-
-	Vector2 playerPos
-	{
-		WINDOW_WIDTH / 2.0f - 4.0f*(0.5f * (float)player.width / 6.0f),
-		WINDOW_HEIGHT / 2.0f - 4.0f*(0.5f * (float)player.height / 10.0f),
-	};
-	
-	float frameWidth = player.width / 6.0f;
-	float frameHeight = player.height / 10.0f;
 
 	SetTargetFPS(60);
 	while (!WindowShouldClose())
 	{
 		BeginDrawing();
 		ClearBackground(WHITE);
-
-
-
-
-	
-		
+		mapPos = Vector2Scale(player.GetWorldPos(), -1.f);
 		DrawTextureEx(map, mapPos, 0.0, 4.0, WHITE);
+
+		player.Update(GetFrameTime());
 
 		//update animation Time
 
@@ -143,15 +137,7 @@ int main()
 		
 
 
-		Rectangle source{
-			frame * frameWidth,
-			row* frameHeight,
-			rightLeft*(float)player.width / 6.f,
-			(float)player.height / 10.0f
-		};
 
-		Rectangle dest{ playerPos.x,playerPos.y,4.0f * (float)player.width / 6.0f,4.0f * (float)player.height / 10.0f };
-		DrawTexturePro(player, source, dest, Vector2{}, 0.f, WHITE);
 		EndDrawing();
 	}
 	CloseWindow();
