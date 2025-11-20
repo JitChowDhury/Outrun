@@ -3,7 +3,7 @@
 class Character
 {
 private:
-	Texture2D texture;
+	Texture2D texture{LoadTexture("assets/texture/Player.png") };
 	Vector2 screenPos;
 	Vector2 worldPos;
 	//right for 1 left for -1
@@ -15,6 +15,7 @@ private:
 	int frame{};
 	const int MAXFRAMES{ 6 };
 	const float UPDATETIME{ 1.f / 12.f };
+	const float SPEED{ 4.f };
 
 
 	//draw the character
@@ -27,9 +28,77 @@ private:
 public:
 
 	Vector2 GetWorldPos() { return worldPos; }
+	void SetScreenPos(int winWidth, int winHeight);
+	void Update(float deltaTime);
 	
 
 };
+
+
+
+void Character::SetScreenPos(int winWidth, int winHeight)
+{
+	screenPos =
+	{
+		winWidth / 2.0f - 4.0f * (0.5f * (float)texture.width / 6.0f),
+		winHeight / 2.0f - 4.0f * (0.5f * (float)texture.height / 10.0f),
+	};
+}
+
+void Character::Update(float deltaTime)
+{
+	Vector2 direction{};
+
+
+	if (IsKeyDown(KEY_A))
+		direction.x -= 1.0;
+	if (IsKeyDown(KEY_D))
+		direction.x += 1.0;
+	if (IsKeyDown(KEY_W))
+		direction.y -= 1.0;
+	if (IsKeyDown(KEY_S))
+		direction.y += 1.0;
+
+	if (Vector2Length(direction) != 0.0)
+	{
+		//set worldPos=worldPos+direction
+		worldPos = Vector2Add(worldPos, Vector2Scale(Vector2Normalize(direction), speed));
+		direction.x < 0.f ? rightLeft = -1.f : rightLeft = 1.f;
+		if (direction.y > 0.f && direction.x == 0.f)
+		{
+			row = run_row_down;
+		}
+		else if (direction.y < 0.f && direction.x == 0.f)
+		{
+			row = run_row_up;
+		}
+		else
+		{
+			row = run_row_side;
+		}
+	}
+	else
+	{
+		row = idle_row;
+	}
+
+	runningTime += deltaTime;
+	if (runningTime >= UPDATETIME)
+	{
+		frame++;
+		runningTime = 0.f;
+		if (frame > MAXFRAMES) frame = 0;
+	}
+}
+
+
+
+
+
+
+
+
+
 
 
 int main()
@@ -45,7 +114,6 @@ int main()
 	float speed{ 4.0 };
 
 
-	Texture2D player = LoadTexture("assets/texture/Player.png");
 	Vector2 playerPos
 	{
 		WINDOW_WIDTH / 2.0f - 4.0f*(0.5f * (float)player.width / 6.0f),
@@ -60,53 +128,17 @@ int main()
 	{
 		BeginDrawing();
 		ClearBackground(WHITE);
-		Vector2 direction{};
 
 
-		if (IsKeyDown(KEY_A))
-			direction.x -= 1.0;
-		if (IsKeyDown(KEY_D))
-			direction.x += 1.0;
-		if (IsKeyDown(KEY_W))
-			direction.y -= 1.0;
-		if (IsKeyDown(KEY_S))
-			direction.y += 1.0;
 
 
-		if (Vector2Length(direction) != 0.0)
-		{
-			mapPos = Vector2Subtract(mapPos, Vector2Scale(Vector2Normalize(direction), speed));
-		    direction.x < 0.f? rightLeft = -1.f: rightLeft = 1.f;
-			if (direction.y > 0.f && direction.x == 0.f)
-			{
-				row = run_row_down;
-			}
-			else if (direction.y < 0.f && direction.x==0.f)
-			{
-				row = run_row_up;
-			}
-			else
-			{
-				row = run_row_side;
-			}
-		}
-		else
-		{
-			row = idle_row;
-		}
 	
 		
 		DrawTextureEx(map, mapPos, 0.0, 4.0, WHITE);
 
 		//update animation Time
 
-		runningTime += GetFrameTime();
-		if (runningTime >= UPDATETIME)
-		{
-			frame++;
-			runningTime = 0.f;
-			if (frame > MAXFRAMES) frame = 0;
-		}
+	
 
 		
 
