@@ -1,9 +1,6 @@
 #include "Character.h"
 
-
-
-
-
+//constructor
 Character::Character()
 {
 	frameWidth = (float)texture.width / MAXFRAMES;
@@ -22,6 +19,7 @@ void Character::SetScreenPos(int winWidth, int winHeight)
 
 void Character::Update(float deltaTime)
 {
+	worldPosLastFrame = worldPos;
 	Vector2 direction{};
 
 
@@ -43,6 +41,7 @@ void Character::Update(float deltaTime)
 		{
 			row = run_row_down;
 		}
+
 		else if (direction.y < 0.f && direction.x == 0.f)
 		{
 			row = run_row_up;
@@ -77,4 +76,9 @@ void Character::Update(float deltaTime)
 	Rectangle dest{ screenPos.x,screenPos.y,4.0f * frameWidth,4.0f * frameHeight };
 
 	DrawTexturePro(texture, source, dest, Vector2{}, 0.f, WHITE);
+}
+
+void Character::UndoMovement()
+{
+	worldPos = worldPosLastFrame;
 }

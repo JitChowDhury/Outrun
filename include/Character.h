@@ -7,10 +7,10 @@ private:
 	Texture2D texture{ LoadTexture("assets/texture/Player.png") };
 	Vector2 screenPos{};
 	Vector2 worldPos{};
+	Vector2 worldPosLastFrame{};
 	//right for 1 left for -1
 	float rightLeft{ 1.f };
 	float speed{ 4.0 };
-
 	//ANIMATION VARIABLES
 
 	float runningTime{};
@@ -33,6 +33,7 @@ public:
 	Vector2 GetWorldPos() { return worldPos; }
 	void SetScreenPos(int winWidth, int winHeight);
 	void Update(float deltaTime);
+	void UndoMovement();
 
 
 };

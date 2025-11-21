@@ -14,6 +14,7 @@ int main()
 
 	Texture2D map = LoadTexture("assets/tilesets/worldmap.png");
 	Vector2 mapPos{ 0.0,0.0 };
+	const float MAP_SCALE{ 4.0f };
 
 
 	SetTargetFPS(60);
@@ -22,9 +23,19 @@ int main()
 		BeginDrawing();
 		ClearBackground(WHITE);
 		mapPos = Vector2Scale(player.GetWorldPos(), -1.f);
-		DrawTextureEx(map, mapPos, 0.0, 4.0, WHITE);
+		DrawTextureEx(map, mapPos, 0.0, MAP_SCALE, WHITE);
 
 		player.Update(GetFrameTime());
+		//check map bounds
+		if (player.GetWorldPos().x < 0.f ||
+			player.GetWorldPos().y<0.f ||
+			player.GetWorldPos().x+WINDOW_WIDTH>map.width* MAP_SCALE ||
+			player.GetWorldPos().y+WINDOW_HEIGHT>map.height* MAP_SCALE)
+		{
+			player.UndoMovement();
+
+
+		}
 
 
 
