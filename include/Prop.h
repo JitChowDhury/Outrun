@@ -1,0 +1,14 @@
+#include "raylib.h"
+#include "raymath.h"
+
+
+class Prop
+{
+private:
+	Texture2D texture{};
+	Vector2 worldPos{};
+	float scale{ 4.f };
+public:
+	Prop(Vector2 pos);
+
+};
