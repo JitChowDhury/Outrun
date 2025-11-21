@@ -9,8 +9,8 @@ int main()
 	const int WINDOW_HEIGHT{ 684 };
 
 	InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "OutRun");
-	Character player;
-	player.SetScreenPos(WINDOW_WIDTH, WINDOW_HEIGHT);
+	Character player{ WINDOW_WIDTH, WINDOW_HEIGHT };
+	
 
 	Texture2D map = LoadTexture("assets/tilesets/worldmap.png");
 	Vector2 mapPos{ 0.0,0.0 };

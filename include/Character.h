@@ -28,10 +28,11 @@ private:
 	int run_row_down = 3;
 	int run_row_up = 5;
 	int row{};
+
+	float scale{ 4.0f };
 public:
-	Character();
+	Character(int winWidth,int winHeight);
 	Vector2 GetWorldPos() { return worldPos; }
-	void SetScreenPos(int winWidth, int winHeight);
 	void Update(float deltaTime);
 	void UndoMovement();
 

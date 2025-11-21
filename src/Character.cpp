@@ -1,20 +1,17 @@
 #include "Character.h"
 
 //constructor
-Character::Character()
+Character::Character(int winWidth, int winHeight)
 {
-	frameWidth = (float)texture.width / MAXFRAMES;
+	frameWidth = static_cast<float>(texture.width) / MAXFRAMES;
 	frameHeight	 = texture.height / 10.f;
 
-}
-
-void Character::SetScreenPos(int winWidth, int winHeight)
-{
 	screenPos =
 	{
-		winWidth / 2.0f - 4.0f * (0.5f * frameWidth),
-		winHeight / 2.0f - 4.0f * (0.5f * frameHeight)
+		static_cast<float>(winWidth) / 2.0f - scale * (0.5f * frameWidth),
+		static_cast<float>(winHeight) / 2.0f - scale * (0.5f * frameHeight)
 	};
+
 }
 
 void Character::Update(float deltaTime)
@@ -73,7 +70,7 @@ void Character::Update(float deltaTime)
 
 	};
 
-	Rectangle dest{ screenPos.x,screenPos.y,4.0f * frameWidth,4.0f * frameHeight };
+	Rectangle dest{ screenPos.x,screenPos.y,scale * frameWidth,scale * frameHeight };
 
 	DrawTexturePro(texture, source, dest, Vector2{}, 0.f, WHITE);
 }
