@@ -2,6 +2,7 @@
 #include "raymath.h"
 
 #include "Character.h"
+#include "Prop.h"
 
 int main()
 {
@@ -10,6 +11,13 @@ int main()
 
 	InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "OutRun");
 	Character player{ WINDOW_WIDTH, WINDOW_HEIGHT };
+	//---------------ROCKS----------------
+	Image tilesetImg = LoadImage("assets/tilesets/IceTileset.png");
+	Rectangle rockRec = { 64, 32, 32, 32 };
+	Image rockImg = ImageFromImage(tilesetImg, rockRec);
+
+	Texture2D rockTex = LoadTextureFromImage(rockImg);
+	Prop rock{ Vector2{0.f,0.f},rockTex };
 	
 
 	Texture2D map = LoadTexture("assets/tilesets/worldmap.png");
@@ -24,6 +32,7 @@ int main()
 		ClearBackground(WHITE);
 		mapPos = Vector2Scale(player.GetWorldPos(), -1.f);
 		DrawTextureEx(map, mapPos, 0.0, MAP_SCALE, WHITE);
+		rock.Render(player.GetWorldPos());
 
 		player.Update(GetFrameTime());
 		//check map bounds
